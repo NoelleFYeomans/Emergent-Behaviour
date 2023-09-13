@@ -43,7 +43,7 @@ public class Emergent_Origin : MonoBehaviour
 
     public void createCubes() //this dispenses the cubes
     {
-        for (int i = 0; i < maxCubes; i++)
+        for (int i = 0; i < maxCubes; i++) //goto sucks btw
         {
             cubeArray[i] = Instantiate(prefabCube);
 
