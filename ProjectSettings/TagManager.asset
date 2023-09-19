@@ -5,6 +5,9 @@ TagManager:
   serializedVersion: 2
   tags:
   - ActiveCube
+  - KillingCube
+  - Repulsing Cube
+  - Wall
   layers:
   - Default
   - TransparentFX
