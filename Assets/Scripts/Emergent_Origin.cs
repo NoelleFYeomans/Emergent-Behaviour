@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class Emergent_Origin : MonoBehaviour
+public class Emergent_Origin : MonoBehaviour //yellow cubes destroy if they idle/stop, red cubes despawn after 15 seconds(can be respawned)
 {
     public GameObject plane; //the ground
     public GameObject prefabCube; //this is the prefab being instantiated

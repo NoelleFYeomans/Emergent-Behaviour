@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Repulsing_Cube : MonoBehaviour
 {
     private int speed;
     private float timePassed;
+    private int untilDelete;
 
     private RaycastHit[] hitList;
     private RaycastHit[] priorHitList;
@@ -18,6 +20,7 @@ public class Repulsing_Cube : MonoBehaviour
     void Start()
     {
         timePassed = 0f;
+        untilDelete = 0;
         speed = 10;
         rb = GetComponent<Rigidbody>();
 
@@ -46,12 +49,16 @@ public class Repulsing_Cube : MonoBehaviour
         }
 
         priorHitList = hitList;
-
+        if (untilDelete >= 5)
+        {
+            //delete and reset
+        }
         if (timePassed > 3f) //generate new destination every 3 seconds
         {
             randDestination = GameObject.Find("Origin").GetComponent<Emergent_Origin>().genRandomCoords(); //generates new destination
 
             timePassed = 0f;
+            untilDelete++;
         }
 
     }
