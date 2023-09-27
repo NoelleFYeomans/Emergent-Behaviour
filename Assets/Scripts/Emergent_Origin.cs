@@ -17,8 +17,6 @@ public class Emergent_Origin : MonoBehaviour //yellow cubes destroy if they idle
 
     private int maxCubes = 100; //change after testing
     private int maxRCubes = 5; //I don't want more than this
-    private int countRCubes;
-    private bool noSpawn;
 
     private float xMin;
     private float xMax;
@@ -33,8 +31,8 @@ public class Emergent_Origin : MonoBehaviour //yellow cubes destroy if they idle
         cubeArray = new GameObject[maxCubes];
         rCubeArray = new GameObject[maxRCubes];
         UID = 0;
-        countRCubes = 0;
-        noSpawn = false;
+        maxCubes = 100;
+        maxRCubes = 5;
 
         rend = plane.GetComponent<Renderer>(); //gets the plane's... dimensions?
         setBounds(rend.bounds.max, rend.bounds.min); //sets the spawning boundaries
@@ -47,53 +45,28 @@ public class Emergent_Origin : MonoBehaviour //yellow cubes destroy if they idle
         xMax = (rendMax.x - 1);
         zMin = (rendMin.z + 1);
         zMax = (rendMax.z - 1);
-        //Debug.Log(xMin + " " + xMax + " " + zMin + " " + zMax);
     }
     // Update is called once per frame
     void Update()
     {
-        if ((Input.GetButtonDown("Space")) && (!noSpawn))
+        if (Input.GetButtonDown("Space"))
         {
-            if (countRCubes < maxRCubes)
+            foreach (GameObject rCube in rCubeArray)
             {
-                rCubeArray[countRCubes] = Instantiate(repulsingCube);
-
-                rerollRCoords: //goto reroll label
-
-                rCubeArray[countRCubes].transform.position = genRandomCoords();
-
-                for (int i = 0; i < countRCubes; i++)
+                if (!rCube.activeSelf)
                 {
-                    for (int j = 0; j < i; j++)
-                    {
-                        if (rCubeArray[j].transform.position == cubeArray[i].transform.position) //spawn protection
-                        {
-                            goto rerollRCoords; //reroll pos
-                        }
-                    }
-                }
-
-                for (int i = 0; i < cubeArray.Length; i++)
-                {
-                    if (rCubeArray[countRCubes].transform.position == cubeArray[i].transform.position) //spawn protection
-                    {
-                        goto rerollRCoords; //reroll pos
-                    }
-                }
-
-                countRCubes++;
-
-                if (countRCubes >= 5)
-                {
-                    noSpawn = true;
+                    rCube.transform.position = genRandomCoords(); //spawn protect this ig?
+                    rCube.SetActive(true);
+                    return;
                 }
             }
+
         }
-        //when you press space, spawn a Repulsing Cube @ random coords
+
     }
     public void createCubes() //this dispenses the cubes
     {
-        for (int i = 0; i < maxCubes; i++)
+        for (int i = 0; i < maxCubes; i++) //YELLOW CUBES
         {
             cubeArray[i] = Instantiate(prefabCube);
 
@@ -111,7 +84,37 @@ public class Emergent_Origin : MonoBehaviour //yellow cubes destroy if they idle
                     goto rerollCoords;
                 }
             }
-        }
+
+
+        } //yellow cubes
+
+        for (int j = 0; j < maxRCubes; j++) //RED CUBES
+        {
+            rCubeArray[j] = Instantiate(repulsingCube); //creates all the cubes
+
+            rerollRCoords: //reroll coordinates label
+
+            rCubeArray[j].transform.position = genRandomCoords();
+
+            for (int i = 0; i < cubeArray.Length; i++) //compare vs all yellow cube position
+            {
+                if (rCubeArray[j].transform.position == cubeArray[i].transform.position)
+                {
+                    goto rerollRCoords; //will reroll coords if this cube matches any existing yellow cube coord
+                }
+            }
+
+            for (int l = 0; l < (j - 1); l++) //compare vs all other red cubes
+            {
+                if (rCubeArray[j].transform.position == rCubeArray[l].transform.position)
+                {
+                    goto rerollRCoords; //reroll pos
+                }
+            }
+
+            rCubeArray[j].SetActive(false); //makes it so they dont exist on spawn
+        } //red cubes
+
     }
     public Vector3 genRandomCoords() //gens random x/z coordinates
     {

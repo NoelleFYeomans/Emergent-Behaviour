@@ -6,8 +6,8 @@ using UnityEngine;
 public class Repulsing_Cube : MonoBehaviour
 {
     private int speed;
-    private float timePassed;
-    private int untilDelete;
+    private float changeDirTime;
+    private float untilDeletion;
 
     private RaycastHit[] hitList;
     private RaycastHit[] priorHitList;
@@ -19,8 +19,8 @@ public class Repulsing_Cube : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        timePassed = 0f;
-        untilDelete = 0;
+        changeDirTime = 0f;
+        untilDeletion = 0f;
         speed = 10;
         rb = GetComponent<Rigidbody>();
 
@@ -34,7 +34,7 @@ public class Repulsing_Cube : MonoBehaviour
         rb.MovePosition(transform.position + randDestination);
 
         //RaycastHit hit;
-        timePassed += Time.deltaTime;
+        changeDirTime += Time.deltaTime;
 
         hitList = Physics.SphereCastAll(transform.position, 5, transform.forward, 5);
 
@@ -49,16 +49,17 @@ public class Repulsing_Cube : MonoBehaviour
         }
 
         priorHitList = hitList;
-        if (untilDelete >= 5)
+        if (untilDeletion >= 5)
         {
-            //delete and reset
+            gameObject.SetActive(false);
+            untilDeletion = 0;
         }
-        if (timePassed > 3f) //generate new destination every 3 seconds
+        if (changeDirTime > 3f) //generate new destination every 3 seconds
         {
             randDestination = GameObject.Find("Origin").GetComponent<Emergent_Origin>().genRandomCoords(); //generates new destination
 
-            timePassed = 0f;
-            untilDelete++;
+            changeDirTime = 0f;
+            untilDeletion++;
         }
 
     }
