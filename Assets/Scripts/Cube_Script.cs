@@ -11,7 +11,7 @@ public class Cube_Script : MonoBehaviour
     private Rigidbody rb;
 
     public float id;
-    private float speed = 100;
+    private float speed = 500;
 
     private float closest; //max possible distance/default
     private float distance;
@@ -24,14 +24,14 @@ public class Cube_Script : MonoBehaviour
         array = GameObject.Find("Origin").GetComponent<Emergent_Origin>().cubeArray; //gets array of cubes from origin
         rb = GetComponent<Rigidbody>(); 
         closestObject = GetClosestObject();
-        speed = 100;
+        speed = 500;
 
         moveCubeAway(); //starts the chain of movement
     }
     // Update is called once per frame
     void Update() //perhaps every other cube should attract rather than repel?
     {
-        transform.localRotation.Set(0f, 0f, 0f, 0f);
+        //transform.localRotation.Set(0f, 0f, 0f, 0f);
         priorClosestObject = closestObject; //sets what the last closest object was
         closestObject = GetClosestObject(); //checks to see if a new object is closer
 
